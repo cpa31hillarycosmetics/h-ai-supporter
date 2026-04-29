@@ -177,7 +177,6 @@ export default function App() {
 
   const runAIAnalysis = async () => {
     if (!base64Image) { setError("Будь ласка, зробіть фото."); return; }
-    if (!user) { setError("Авторизація... Спробуйте ще раз за мить."); return; }
 
     setLoading(true);
     setError(null);
@@ -223,12 +222,13 @@ export default function App() {
       setRecommendations(finalRecommendations);
       
       // Save to Firebase History (RULE 1)
-      const historyRef = collection(db, 'artifacts', appId, 'users', user.uid, 'history');
-      await addDoc(historyRef, {
-        date: new Date().toISOString(),
-        analysis: parsedResult,
-        recommendations: finalRecommendations,
-        userPhoto: image
+      if (user) {
+  const historyRef = collection(db, 'artifacts', appId, 'users', user.uid, 'history');
+  await addDoc(historyRef, {
+    date: new Date().toISOString(),
+    analysis: parsedResult,
+    recommendations: finalRecommendations,
+    userPhoto: image
       });
       
       setLoadingProgress(100);
