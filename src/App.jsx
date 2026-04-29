@@ -243,7 +243,7 @@ export default function App() {
       if (err.message?.includes('OPENAI_API_KEY')) {
         setError("На Vercel треба додати OPENAI_API_KEY у Environment Variables.");
       } else {
-        setError("Збій аналізу. Перевірте налаштування API або спробуйте ще раз.");
+         setError(err.message || "Збій аналізу. Перевірте налаштування API або спробуйте ще раз.");
       }
       setStep('questions');
     } finally {
