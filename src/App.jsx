@@ -221,15 +221,19 @@ export default function App() {
       setAnalysis(parsedResult);
       setRecommendations(finalRecommendations);
       
-      // Save to Firebase History (RULE 1)
-      if (user) {
-  const historyRef = collection(db, 'artifacts', appId, 'users', user.uid, 'history');
-  await addDoc(historyRef, {
-    date: new Date().toISOString(),
-    analysis: parsedResult,
-    recommendations: finalRecommendations,
-    userPhoto: image
-      });
+       if (user) {
+        try {
+          const historyRef = collection(db, 'artifacts', appId, 'users', user.uid, 'history');
+          await addDoc(historyRef, {
+            date: new Date().toISOString(),
+            analysis: parsedResult,
+            recommendations: finalRecommendations,
+            userPhoto: image
+          });
+        } catch (historyError) {
+          console.warn("History save failed", historyError);
+        }
+      }
       
       setLoadingProgress(100);
       setTimeout(() => setStep('results'), 300);
