@@ -338,7 +338,7 @@ async function callOpenAI(payload) {
 
   const model = process.env.OPENAI_MODEL || DEFAULT_MODEL;
   const body = { model, ...payload };
-  if (model.startsWith('gpt-5')) body.reasoning = { effort: 'none' };
+  if (model.startsWith('gpt-5')) body.reasoning = { effort: 'minimal' };
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), Number(process.env.OPENAI_TIMEOUT_MS || 45000));
